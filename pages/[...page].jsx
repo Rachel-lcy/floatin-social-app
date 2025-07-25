@@ -1,6 +1,6 @@
 import { builder, BuilderComponent } from "@builder.io/react";
 
-builder.init(process.env.NEXT_PUBLIC_BUILDER_PUBLIC_KEY d);
+builder.init(process.env.NEXT_PUBLIC_BUILDER_PUBLIC_KEY);
 
 export async function getStaticProps({ params }) {
   let urlPath = "/";
