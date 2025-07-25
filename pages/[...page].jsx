@@ -13,13 +13,24 @@ export async function getStaticProps({ params }) {
 
   const page = await builder.get("page", { url: urlPath }).promise();
 
-  return { props: { page } };
+  return {
+    props: {
+      page: page || null,
+    },
+  };
 }
 
 export async function getStaticPaths() {
-  return { paths: [], fallback: true };
+  return {
+    paths: [],
+    fallback: true,
+  };
 }
 
 export default function Page({ page }) {
+  if (!page) {
+    return <div>404 - Page Not Found</div>;
+  }
+
   return <BuilderComponent model="page" content={page} />;
 }
