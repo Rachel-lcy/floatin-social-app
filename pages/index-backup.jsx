@@ -4,7 +4,7 @@ builder.init(process.env.NEXT_PUBLIC_BUILDER_PUBLIC_KEY);
 
 export async function getStaticProps() {
   const page = await builder.get("page", { url: "/" }).promise();
-
+  console.log("🌐 Builder Request URL: /");
   return {
     props: {
       page: page || null,
