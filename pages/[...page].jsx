@@ -4,7 +4,7 @@ import { GetStaticPropsContext } from "next";
 builder.init(process.env.BUILDER_PUBLIC_KEY!);
 console.log(process.env.BUILDER_PUBLIC_KEY);
 
-export async function getStaticProps({ params }: GetStaticPropsContext) {
+export async function getStaticProps({ params }) {
   let urlPath = "/";
   if (Array.isArray(params?.page)) {
     urlPath += params.page.join("/");
