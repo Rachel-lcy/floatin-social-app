@@ -3,7 +3,7 @@ import { builder, BuilderComponent } from "@builder.io/react";
 builder.init(process.env.NEXT_PUBLIC_BUILDER_PUBLIC_KEY);
 
 export async function getStaticProps({ params }) {
-  let urlPath = "/"; // ✅ 初始化
+  let urlPath = "/";
 
   if (Array.isArray(params?.page)) {
     urlPath += params.page.join("/");
