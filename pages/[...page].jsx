@@ -24,6 +24,7 @@ export async function getStaticPaths() {
     fields: 'data.url',
     options: { noTargeting: true },
   });
+  console.log("Builder Request URL:", urlPath);
 
   return {
     paths: pages.map(p => p.data?.url || '/').filter(Boolean),
