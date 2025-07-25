@@ -1,26 +1,7 @@
-
-import { builder, BuilderComponent } from '@builder.io/react';
-import { SignedIn, SignedOut, RedirectToSignIn } from '@clerk/nextjs';
-
+import { SignedIn, SignedOut, RedirectToSignIn } from "@clerk/nextjs";
+import { BuilderComponent, builder } from "@builder.io/react";
 
 builder.init(process.env.NEXT_PUBLIC_BUILDER_PUBLIC_KEY);
-
-
-export async function getStaticProps() {
-  const page = await builder
-    .get('page', {
-      url: '/dashboard', //
-    })
-    .promise();
-
-  return {
-    props: {
-      page: page || null,
-    },
-    revalidate: 5,
-  };
-}
-
 
 export default function DashboardPage({ page }) {
   if (!page) {
@@ -38,4 +19,19 @@ export default function DashboardPage({ page }) {
       </SignedOut>
     </>
   );
+}
+
+
+export async function getServerSideProps(context) {
+  const page = await builder.get("page", {
+    userAttributes: {
+      urlPath: "/dashboard",
+    },
+  });
+
+  return {
+    props: {
+      page: page || null,
+    },
+  };
 }
