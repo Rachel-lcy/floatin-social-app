@@ -1,55 +1,38 @@
-// pages/[...page].jsx 或 .tsx
-import { builder, BuilderComponent, useIsPreviewing } from '@builder.io/react';
-import DefaultErrorPage from 'next/error';
-import Head from 'next/head';
-import { useRouter } from 'next/router';
+import { builder, BuilderComponent } from "@builder.io/react";
 
 builder.init(process.env.NEXT_PUBLIC_BUILDER_PUBLIC_KEY);
 
 export async function getStaticProps({ params }) {
-  const pathSegments = params?.page || [];
-  const urlPath = '/' + pathSegments.join('/');
-  const page = await builder.get('page', {
-    userAttributes: { urlPath },
-  }).toPromise() || null;
+  let urlPath = "/"; // ✅ 初始化
+
+  if (Array.isArray(params?.page)) {
+    urlPath += params.page.join("/");
+  } else if (typeof params?.page === "string") {
+    urlPath += params.page;
+  }
+
+  console.log("Builder Request URL:", urlPath);
+
+  const page = await builder.get("page", { url: urlPath }).promise();
 
   return {
-    props: { page },
-    revalidate: 5,
+    props: {
+      page: page || null,
+    },
   };
 }
 
 export async function getStaticPaths() {
-  const pages = await builder.getAll('page', {
-    fields: 'data.url',
-    options: { noTargeting: true },
-  });
-  console.log("Builder Request URL:", urlPath);
-
   return {
-    paths: pages.map(p => p.data?.url || '/').filter(Boolean),
+    paths: [],
     fallback: true,
   };
 }
 
 export default function Page({ page }) {
-  const router = useRouter();
-  const isPreviewing = useIsPreviewing();
-
-  if (router.isFallback) {
-    return <h1>Loading...</h1>;
+  if (!page) {
+    return <div>404 - Page Not Found</div>;
   }
 
-  if (!page && !isPreviewing) {
-    return <DefaultErrorPage statusCode={404} />;
-  }
-
-  return (
-    <>
-      <Head>
-        <meta name="viewport" content="width=device-width" />
-      </Head>
-      <BuilderComponent model="page" content={page} />
-    </>
-  );
+  return <BuilderComponent model="page" content={page} />;
 }
