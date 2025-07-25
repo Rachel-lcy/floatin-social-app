@@ -1,11 +1,10 @@
 import { builder, BuilderComponent } from "@builder.io/react";
-import { GetStaticPropsContext } from "next";
 
-builder.init(process.env.BUILDER_PUBLIC_KEY!);
-console.log(process.env.BUILDER_PUBLIC_KEY);
+builder.init(process.env.BUILDER_PUBLIC_KEY);
 
 export async function getStaticProps({ params }) {
   let urlPath = "/";
+
   if (Array.isArray(params?.page)) {
     urlPath += params.page.join("/");
   } else if (typeof params?.page === "string") {
@@ -21,6 +20,6 @@ export async function getStaticPaths() {
   return { paths: [], fallback: true };
 }
 
-export default function Page({ page }: any) {
+export default function Page({ page }) {
   return <BuilderComponent model="page" content={page} />;
 }
