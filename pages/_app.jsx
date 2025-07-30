@@ -13,3 +13,5 @@ export default function MyApp({ Component, pageProps }) {
     </ClerkProvider>
   );
 }
+
+export { default, getStaticProps } from './[[...page]]';
