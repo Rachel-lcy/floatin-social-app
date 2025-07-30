@@ -62,7 +62,7 @@ export async function getStaticProps({ params, preview = false }) {
       page: page || null,
       urlPath,
     },
-    revalidate: 60,
+    revalidate: 10,
   };
 }
 
